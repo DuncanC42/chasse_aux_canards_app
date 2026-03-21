@@ -1,0 +1,8 @@
+services:
+  api:
+    networks:
+      - chasse-canards-net
+
+networks:
+  chasse-canards-net:
+    external: true

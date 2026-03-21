@@ -1,12 +1,14 @@
-name: chasse_canards_react_app
+name: chasse_canards_front_office
 services:
-  chasse_canards_front:
+  front-office:
     build:
       context: .
       dockerfile: Dockerfile
       target: development
     ports:
       - "5173:5173"
+    networks:
+      chasse-canards-front-office:
     develop:
       watch:
         - action: sync
@@ -20,3 +22,5 @@ services:
         - action: rebuild
           path: ./vite.config.js
           target: /app/vite.config.js
+networks:
+  chasse-canards-front-office:

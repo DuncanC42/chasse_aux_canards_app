@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600&display=swap');
+
+/* ─── Root ──────────────────────────────────────────────── */
+
+.classement {
+    background: #111d11;
+    min-height: 100dvh;
+    font-family: 'Nunito Sans', sans-serif;
+    padding-bottom: 2.5rem;
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+
+.classement__header {
+    text-align: center;
+    padding: 28px 20px 8px;
+}
+
+.classement__duck {
+    display: block;
+    font-size: 48px;
+    margin-bottom: 6px;
+    animation: bob 2.8s ease-in-out infinite;
+    /* si tu passes à une <img> : width: 64px; height: 64px; object-fit: contain; */
+}
+
+.classement__title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #f0e040;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.classement__subtitle {
+    font-size: 13px;
+    color: #4a7a4a;
+    font-weight: 600;
+    margin: 4px 0 0;
+    letter-spacing: 0.5px;
+}
+
+.classement__divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #f0e040, transparent);
+    margin: 12px auto;
+    border-radius: 1px;
+}
+
+/* ─── Global progress bar ────────────────────────────────── */
+
+.classement__global {
+    margin: 0 20px 20px;
+}
+
+.classement__global-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #4a7a4a;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.classement__global-count {
+    color: #8abf8a;
+}
+
+.classement__global-bar-wrap {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.classement__global-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #2a7a2a, #f0e040);
+    transition: width 1s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* ─── List ───────────────────────────────────────────────── */
+
+.classement__list {
+    list-style: none;
+    padding: 0 16px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ─── States ─────────────────────────────────────────────── */
+
+.classement__loading,
+.classement__error {
+    text-align: center;
+    padding: 60px 20px;
+    color: #4a7a4a;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.loading-duck {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 10px;
+    animation: bob 1.2s ease-in-out infinite;
+}
+
+.classement__error p {
+    color: #c06060;
+    font-weight: 600;
+    margin: 0 0 4px;
+}
+
+.classement__error small {
+    color: #5a4040;
+    font-size: 12px;
+}
+
+/* ─── Card ───────────────────────────────────────────────── */
+
+.promo-card {
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: pop 0.4s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+
+.promo-card:nth-child(1) { animation-delay: .05s; }
+.promo-card:nth-child(2) { animation-delay: .12s; }
+.promo-card:nth-child(3) { animation-delay: .19s; }
+.promo-card:nth-child(4) { animation-delay: .26s; }
+
+/* Rang 1 — vert lime */
+.card--1 { background: #182810; border: 2px solid #6abf2a; }
+/* Rang 2 — cyan */
+.card--2 { background: #0d2020; border: 2px solid #2ab8b8; }
+/* Rang 3 — orange/ambre */
+.card--3 { background: #261a06; border: 2px solid #e09020; }
+/* Rang 4+ — violet atténué */
+.card--4 { background: #181820; border: 1.5px solid #6060b0; }
+
+/* ─── Badge (emoji ou image) ─────────────────────────────── */
+
+.promo-card__badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 40px;
+}
+
+.promo-card__emoji {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.promo-card__image {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.promo-card__rank-number {
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.promo-card__pos {
+    font-family: 'Nunito', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.rank--1 { color: #6abf2a; }
+.rank--2 { color: #2ab8b8; }
+.rank--3 { color: #e09020; }
+.rank--4 { color: #7070c0; }
+
+/* ─── Info (nom + barre + %) ─────────────────────────────── */
+
+.promo-card__info {
+    flex: 1;
+    min-width: 0;
+}
+
+.promo-card__name {
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 0 6px;
+}
+
+.name--1 { color: #90e040; }
+.name--2 { color: #40d8d8; }
+.name--3 { color: #f0b040; }
+.name--4 { color: #9090d0; }
+
+.promo-card__bar-wrap {
+    height: 7px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.promo-card__bar {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.9s cubic-bezier(.34, 1.56, .64, 1);
+}
+
+.bar--1 { background: linear-gradient(90deg, #3a8a10, #90e040); }
+.bar--2 { background: linear-gradient(90deg, #0a6868, #40d8d8); }
+.bar--3 { background: linear-gradient(90deg, #905010, #f0b040); }
+.bar--4 { background: linear-gradient(90deg, #383870, #9090d0); }
+
+.promo-card__pct {
+    font-size: 11px;
+    color: #3a5a3a;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+/* ─── Score ──────────────────────────────────────────────── */
+
+.promo-card__score {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.score-value {
+    font-family: 'Nunito', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    display: block;
+    line-height: 1;
+}
+
+.score--1 { color: #90e040; }
+.score--2 { color: #40d8d8; }
+.score--3 { color: #f0b040; }
+.score--4 { color: #9090d0; }
+
+.score-label {
+    font-size: 11px;
+    color: #3a5a3a;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* ─── Animations ─────────────────────────────────────────── */
+
+@keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+}
+
+@keyframes pop {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+}
