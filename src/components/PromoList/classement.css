@@ -3,7 +3,7 @@
 /* ─── Root ──────────────────────────────────────────────── */
 
 .classement {
-    background: #111d11;
+    background: #0d1128;
     min-height: 100dvh;
     font-family: 'Nunito Sans', sans-serif;
     padding-bottom: 2.5rem;
@@ -21,21 +21,20 @@
     font-size: 48px;
     margin-bottom: 6px;
     animation: bob 2.8s ease-in-out infinite;
-    /* si tu passes à une <img> : width: 64px; height: 64px; object-fit: contain; */
 }
 
 .classement__title {
     font-family: 'Nunito', sans-serif;
     font-size: 22px;
     font-weight: 900;
-    color: #f0e040;
+    color: #e8833a;
     letter-spacing: 1px;
     margin: 0;
 }
 
 .classement__subtitle {
     font-size: 13px;
-    color: #4a7a4a;
+    color: #6a7aaa;
     font-weight: 600;
     margin: 4px 0 0;
     letter-spacing: 0.5px;
@@ -44,7 +43,7 @@
 .classement__divider {
     width: 80px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #f0e040, transparent);
+    background: linear-gradient(90deg, transparent, #e8833a, transparent);
     margin: 12px auto;
     border-radius: 1px;
 }
@@ -59,7 +58,7 @@
     display: flex;
     justify-content: space-between;
     font-size: 12px;
-    color: #4a7a4a;
+    color: #6a7aaa;
     font-weight: 600;
     margin-bottom: 6px;
     letter-spacing: 0.5px;
@@ -67,12 +66,12 @@
 }
 
 .classement__global-count {
-    color: #8abf8a;
+    color: #9aaad8;
 }
 
 .classement__global-bar-wrap {
     height: 10px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 99px;
     overflow: hidden;
 }
@@ -80,7 +79,7 @@
 .classement__global-bar {
     height: 100%;
     border-radius: 99px;
-    background: linear-gradient(90deg, #2a7a2a, #f0e040);
+    background: linear-gradient(90deg, #2a4a7f, #e8833a);
     transition: width 1s cubic-bezier(.34, 1.56, .64, 1);
 }
 
@@ -101,7 +100,7 @@
 .classement__error {
     text-align: center;
     padding: 60px 20px;
-    color: #4a7a4a;
+    color: #6a7aaa;
     font-family: 'Nunito Sans', sans-serif;
 }
 
@@ -119,7 +118,7 @@
 }
 
 .classement__error small {
-    color: #5a4040;
+    color: #5a4a4a;
     font-size: 12px;
 }
 
@@ -139,14 +138,14 @@
 .promo-card:nth-child(3) { animation-delay: .19s; }
 .promo-card:nth-child(4) { animation-delay: .26s; }
 
-/* Rang 1 — vert lime */
-.card--1 { background: #182810; border: 2px solid #6abf2a; }
-/* Rang 2 — cyan */
-.card--2 { background: #0d2020; border: 2px solid #2ab8b8; }
-/* Rang 3 — orange/ambre */
-.card--3 { background: #261a06; border: 2px solid #e09020; }
-/* Rang 4+ — violet atténué */
-.card--4 { background: #181820; border: 1.5px solid #6060b0; }
+/* Rang 1 — orange BDE */
+.card--1 { background: #211508; border: 2px solid #e8833a; }
+/* Rang 2 — bleu cosmos */
+.card--2 { background: #0f1a35; border: 2px solid #4a7abf; }
+/* Rang 3 — violet spatial */
+.card--3 { background: #180f2a; border: 2px solid #9060bf; }
+/* Rang 4+ — bleu nuit */
+.card--4 { background: #161d3a; border: 1.5px solid #3a4a80; }
 
 /* ─── Badge (emoji ou image) ─────────────────────────────── */
 
@@ -183,10 +182,10 @@
     letter-spacing: 0.5px;
 }
 
-.rank--1 { color: #6abf2a; }
-.rank--2 { color: #2ab8b8; }
-.rank--3 { color: #e09020; }
-.rank--4 { color: #7070c0; }
+.rank--1 { color: #f0a060; }
+.rank--2 { color: #6a9fd8; }
+.rank--3 { color: #b080e0; }
+.rank--4 { color: #7080c0; }
 
 /* ─── Info (nom + barre + %) ─────────────────────────────── */
 
@@ -205,14 +204,14 @@
     margin: 0 0 6px;
 }
 
-.name--1 { color: #90e040; }
-.name--2 { color: #40d8d8; }
-.name--3 { color: #f0b040; }
+.name--1 { color: #f0a060; }
+.name--2 { color: #6a9fd8; }
+.name--3 { color: #b080e0; }
 .name--4 { color: #9090d0; }
 
 .promo-card__bar-wrap {
     height: 7px;
-    background: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.06);
     border-radius: 99px;
     overflow: hidden;
     margin-bottom: 5px;
@@ -224,14 +223,14 @@
     transition: width 0.9s cubic-bezier(.34, 1.56, .64, 1);
 }
 
-.bar--1 { background: linear-gradient(90deg, #3a8a10, #90e040); }
-.bar--2 { background: linear-gradient(90deg, #0a6868, #40d8d8); }
-.bar--3 { background: linear-gradient(90deg, #905010, #f0b040); }
-.bar--4 { background: linear-gradient(90deg, #383870, #9090d0); }
+.bar--1 { background: linear-gradient(90deg, #a04010, #f0a060); }
+.bar--2 { background: linear-gradient(90deg, #1a3a70, #6a9fd8); }
+.bar--3 { background: linear-gradient(90deg, #5a2090, #b080e0); }
+.bar--4 { background: linear-gradient(90deg, #2a3060, #9090d0); }
 
 .promo-card__pct {
     font-size: 11px;
-    color: #3a5a3a;
+    color: #4a5a8a;
     font-weight: 600;
     letter-spacing: 0.3px;
 }
@@ -251,14 +250,14 @@
     line-height: 1;
 }
 
-.score--1 { color: #90e040; }
-.score--2 { color: #40d8d8; }
-.score--3 { color: #f0b040; }
+.score--1 { color: #f0a060; }
+.score--2 { color: #6a9fd8; }
+.score--3 { color: #b080e0; }
 .score--4 { color: #9090d0; }
 
 .score-label {
     font-size: 11px;
-    color: #3a5a3a;
+    color: #4a5a8a;
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: 600;

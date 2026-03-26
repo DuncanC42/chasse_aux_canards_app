@@ -6,15 +6,15 @@ import Classement from "./components/PromoList/Classement.jsx";
 import AdminLogin from "./components/admin/AdminLogin.jsx";
 import RequireAuth from "./components/admin/RequireAuth.jsx";
 import AdminDashboard from "./components/admin/AdminDashboard.jsx";
+import ScanPage from "./components/scan/ScanPage.jsx";
+
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <AuthProvider>
             <BrowserRouter>
                 <Routes>
-                    {/* Public */}
                     <Route path="/" element={<Classement />} />
-
-                    {/* Admin */}
+                    <Route path="/:cle" element={<ScanPage />} />
                     <Route path="/admin" element={<AdminLogin />} />
                     <Route
                         path="/admin/dashboard"

@@ -2,17 +2,17 @@
 
 /* ─── Variables ──────────────────────────────────────────── */
 :root {
-    --bg:        #111d11;
-    --bg-card:   #1a2a1a;
-    --bg-input:  #0d160d;
-    --border:    #2a3f2a;
-    --accent:    #f0e040;
-    --green:     #4a9a4a;
-    --green-dim: #2a5a2a;
-    --red:       #c05050;
-    --text:      #c8d8c8;
-    --text-dim:  #4a7a4a;
-    --radius:    10px;
+    --bg:        #0d1128;        /* bleu nuit profond */
+    --bg-card:   #161d3a;        /* bleu nuit légèrement plus clair */
+    --bg-input:  #0a0e1f;        /* presque noir bleuté */
+    --border:    #2a3560;        /* bleu foncé */
+    --accent:    #e8833a;        /* orange BDE */
+    --green:     #4a7abf;        /* bleu cosmos — remplace le vert */
+    --green-dim: #2a4a7f;        /* bleu cosmos sombre */
+    --red:       #c05050;        /* inchangé */
+    --text:      #e8e4d8;        /* beige clair */
+    --text-dim:  #6a7aaa;        /* bleu grisé */
+    --radius:    12px;
 }
 
 /* ─── Login ──────────────────────────────────────────────── */
@@ -340,4 +340,82 @@
 @keyframes pop {
     from { opacity: 0; transform: scale(0.95); }
     to   { opacity: 1; transform: scale(1); }
+}
+
+
+/* ─── Modale ─────────────────────────────────────────────── */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal__title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 0;
+}
+
+.modal__actions {
+    display: flex;
+    gap: 8px;
+}
+
+.modal__divider {
+    height: 1px;
+    background: var(--border);
+    margin: 0;
+}
+
+.modal__confirm-delete {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal__confirm-delete p {
+    font-size: 13px;
+    color: var(--text);
+    margin: 0;
+}
+
+.modal__confirm-delete strong {
+    color: var(--red);
+}
+
+/* ─── Item cliquable ─────────────────────────────────────── */
+
+.admin-list__item--clickable {
+    cursor: pointer;
+    transition: border-color .15s;
+}
+
+.admin-list__item--clickable:hover {
+    border-color: var(--green-dim);
+}
+
+.admin-list__chevron {
+    color: var(--text-dim);
+    font-size: 18px;
+    flex-shrink: 0;
 }

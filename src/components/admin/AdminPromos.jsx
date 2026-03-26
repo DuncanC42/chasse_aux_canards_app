@@ -1,7 +1,109 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "./AuthContext.jsx";
-import { apiFetch } from "../../api/client.js";
 import "./admin.css";
+import {useAuth} from "./AuthContext.jsx";
+import {apiFetch} from "../../api/client.js";
+
+function PromoModal({ promo, onClose, onSave, onDelete }) {
+    const [nom, setNom] = useState(promo.nom);
+    const [error, setError] = useState(null);
+    const [saving, setSaving] = useState(false);
+    const [confirmeDelete, setConfirmeDelete] = useState(false);
+
+    const handleSave = async () => {
+        if (!nom.trim() || nom.trim() === promo.nom) { onClose(); return; }
+        setSaving(true);
+        setError(null);
+        try {
+            await onSave(promo.promoId, nom.trim());
+            onClose();
+        } catch (e) {
+            setError(e.message ?? "Erreur lors de la modification");
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        setSaving(true);
+        try {
+            await onDelete(promo.promoId);
+            onClose();
+        } catch (e) {
+            setError(e.message ?? "Erreur lors de la suppression");
+            setSaving(false);
+        }
+    };
+
+    return (
+        <div className="modal-overlay" onClick={onClose}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
+                <h3 className="modal__title">Modifier la promo</h3>
+
+                <div className="admin-field">
+                    <label>Nom</label>
+                    <input
+                        type="text"
+                        value={nom}
+                        onChange={e => setNom(e.target.value)}
+                        autoFocus
+                        onKeyDown={e => e.key === "Enter" && handleSave()}
+                    />
+                </div>
+
+                {error && <p className="admin-error">{error}</p>}
+
+                <div className="modal__actions">
+                    <button
+                        className="admin-btn admin-btn--primary"
+                        onClick={handleSave}
+                        disabled={saving}
+                    >
+                        {saving ? "Sauvegarde…" : "Sauver"}
+                    </button>
+                    <button
+                        className="admin-btn admin-btn--ghost"
+                        onClick={onClose}
+                        disabled={saving}
+                    >
+                        Annuler
+                    </button>
+                </div>
+
+                <div className="modal__divider" />
+
+                {!confirmeDelete ? (
+                    <button
+                        className="admin-btn admin-btn--danger"
+                        onClick={() => setConfirmeDelete(true)}
+                        disabled={saving}
+                    >
+                        Supprimer cette promo
+                    </button>
+                ) : (
+                    <div className="modal__confirm-delete">
+                        <p>Confirmer la suppression de <strong>{promo.nom}</strong> ?</p>
+                        <div className="modal__actions">
+                            <button
+                                className="admin-btn admin-btn--danger"
+                                onClick={handleDelete}
+                                disabled={saving}
+                            >
+                                {saving ? "Suppression…" : "Oui, supprimer"}
+                            </button>
+                            <button
+                                className="admin-btn admin-btn--ghost"
+                                onClick={() => setConfirmeDelete(false)}
+                                disabled={saving}
+                            >
+                                Annuler
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
 
 export default function AdminPromos() {
     const { credentials } = useAuth();
@@ -9,13 +111,12 @@ export default function AdminPromos() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [newNom, setNewNom] = useState("");
-    const [editId, setEditId] = useState(null);
-    const [editNom, setEditNom] = useState("");
+    const [selectedPromo, setSelectedPromo] = useState(null);
 
     const load = async () => {
         try {
             const data = await apiFetch("/promos", {}, credentials);
-            setPromos(data);
+            setPromos(Array.isArray(data) ? data : []);
         } catch (e) {
             setError("Impossible de charger les promos");
         } finally {
@@ -34,35 +135,23 @@ export default function AdminPromos() {
                 body: JSON.stringify({ nom: newNom.trim() }),
             }, credentials);
             setNewNom("");
-            load();
+            await load();
         } catch (e) {
             setError(e.message ?? "Erreur lors de la création");
         }
     };
 
-    const handleUpdate = async (id) => {
-        if (!editNom.trim()) return;
-        try {
-            await apiFetch(`/promos/${id}`, {
-                method: "PUT",
-                body: JSON.stringify({ nom: editNom.trim() }),
-            }, credentials);
-            setEditId(null);
-            setEditNom("");
-            load();
-        } catch (e) {
-            setError(e.message ?? "Erreur lors de la modification");
-        }
+    const handleSave = async (id, nom) => {
+        await apiFetch(`/promos/${id}`, {
+            method: "PUT",
+            body: JSON.stringify({ nom }),
+        }, credentials);
+        await load();
     };
 
     const handleDelete = async (id) => {
-        if (!confirm("Supprimer cette promo ?")) return;
-        try {
-            await apiFetch(`/promos/${id}`, { method: "DELETE" }, credentials);
-            load();
-        } catch (e) {
-            setError(e.message ?? "Erreur lors de la suppression");
-        }
+        await apiFetch(`/promos/${id}`, { method: "DELETE" }, credentials);
+        await load();
     };
 
     if (loading) return <p className="admin-state">Chargement…</p>;
@@ -73,7 +162,6 @@ export default function AdminPromos() {
 
             {error && <p className="admin-error">{error}</p>}
 
-            {/* Formulaire création */}
             <form className="admin-form" onSubmit={handleCreate}>
                 <div className="admin-field">
                     <label>Nouvelle promo</label>
@@ -91,53 +179,27 @@ export default function AdminPromos() {
                 </div>
             </form>
 
-            {/* Liste */}
             <ul className="admin-list">
                 {promos.map(p => (
-                    <li key={p.promoId} className="admin-list__item">
-                        {editId === p.promoId ? (
-                            <div className="admin-form__row">
-                                <input
-                                    type="text"
-                                    value={editNom}
-                                    onChange={e => setEditNom(e.target.value)}
-                                    autoFocus
-                                />
-                                <button
-                                    className="admin-btn admin-btn--primary"
-                                    onClick={() => handleUpdate(p.promoId)}
-                                >
-                                    Sauver
-                                </button>
-                                <button
-                                    className="admin-btn admin-btn--ghost"
-                                    onClick={() => setEditId(null)}
-                                >
-                                    Annuler
-                                </button>
-                            </div>
-                        ) : (
-                            <>
-                                <span className="admin-list__label">{p.nom}</span>
-                                <div className="admin-list__actions">
-                                    <button
-                                        className="admin-btn admin-btn--ghost"
-                                        onClick={() => { setEditId(p.promoId); setEditNom(p.nom); }}
-                                    >
-                                        Renommer
-                                    </button>
-                                    <button
-                                        className="admin-btn admin-btn--danger"
-                                        onClick={() => handleDelete(p.promoId)}
-                                    >
-                                        Supprimer
-                                    </button>
-                                </div>
-                            </>
-                        )}
+                    <li
+                        key={p.promoId}
+                        className="admin-list__item admin-list__item--clickable"
+                        onClick={() => setSelectedPromo(p)}
+                    >
+                        <span className="admin-list__label">{p.nom}</span>
+                        <span className="admin-list__chevron">›</span>
                     </li>
                 ))}
             </ul>
+
+            {selectedPromo && (
+                <PromoModal
+                    promo={selectedPromo}
+                    onClose={() => setSelectedPromo(null)}
+                    onSave={handleSave}
+                    onDelete={handleDelete}
+                />
+            )}
         </section>
     );
 }

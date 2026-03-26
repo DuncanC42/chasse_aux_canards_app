@@ -1,0 +1,506 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Nunito+Sans:wght@400;600&display=swap');
+
+:root {
+    --bg:        #0d1128;        /* bleu nuit profond */
+    --bg-card:   #161d3a;        /* bleu nuit légèrement plus clair */
+    --bg-input:  #0a0e1f;        /* presque noir bleuté */
+    --border:    #2a3560;        /* bleu foncé */
+    --accent:    #e8833a;        /* orange BDE */
+    --green:     #4a7abf;        /* bleu cosmos — remplace le vert */
+    --green-dim: #2a4a7f;        /* bleu cosmos sombre */
+    --red:       #c05050;        /* inchangé */
+    --text:      #e8e4d8;        /* beige clair */
+    --text-dim:  #6a7aaa;        /* bleu grisé */
+    --radius:    12px;
+}
+
+/* ─── États de chargement ────────────────────────────────── */
+
+.scan-state {
+    background: var(--bg);
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito Sans', sans-serif;
+    color: var(--text-dim);
+    gap: 8px;
+}
+
+.scan-state--error { color: var(--red); }
+
+.scan-state__duck {
+    font-size: 48px;
+    animation: bob 2s ease-in-out infinite;
+}
+
+/* ─── Vue publique ───────────────────────────────────────── */
+
+.scan-public {
+    background: var(--bg);
+    min-height: 100dvh;
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+.scan-public__hero {
+    text-align: center;
+    padding: 32px 24px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+}
+
+.scan-public__duck {
+    font-size: 56px;
+    display: block;
+    margin-bottom: 16px;
+    animation: bob 2.8s ease-in-out infinite;
+}
+
+.scan-public__points-wrap {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.scan-public__points {
+    font-family: 'Nunito', sans-serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.scan-public__pts-label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--green);
+}
+
+.scan-public__loc {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 0 0 20px;
+}
+
+.scan-public__unset {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin: 12px 0 20px;
+}
+
+.scan-public__divider {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    margin: 0 auto 20px;
+    border-radius: 1px;
+}
+
+.scan-public__bde-notice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    max-width: 340px;
+    margin: 0 auto;
+}
+
+.scan-public__bde-icon { font-size: 24px; }
+
+.scan-public__bde-notice p {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    margin: 0;
+    text-align: left;
+}
+
+/* ─── Vue admin ──────────────────────────────────────────── */
+
+.scan-admin {
+    background: var(--bg);
+    min-height: 100dvh;
+    font-family: 'Nunito Sans', sans-serif;
+    color: var(--text);
+    padding: 24px 20px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.scan-admin__header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.scan-admin__badge {
+    display: inline-block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    padding: 4px 12px;
+    margin-bottom: 8px;
+}
+
+.scan-admin__cle {
+    display: block;
+    font-family: monospace;
+    font-size: 22px;
+    color: var(--accent);
+    font-weight: 900;
+    margin-bottom: 6px;
+}
+
+.scan-admin__info {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 0;
+}
+
+/* ─── Choix poser / attribuer ────────────────────────────── */
+
+.scan-admin__choices {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.scan-choice {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px 0;
+    transition: border-color .2s, transform .1s;
+    width: 100%;
+}
+
+.scan-choice:hover:not(.scan-choice--disabled) {
+    transform: translateY(-2px);
+}
+
+.scan-choice--poser:hover { border-color: var(--green); }
+.scan-choice--attribuer:hover { border-color: #4a8abf; }
+
+.scan-choice--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.scan-choice__icon {
+    grid-row: 1 / 3;
+    font-size: 28px;
+    align-self: center;
+}
+
+.scan-choice__label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.scan-choice__sub {
+    font-size: 12px;
+    color: var(--text-dim);
+}
+
+/* ─── Formulaires ────────────────────────────────────────── */
+
+.scan-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.scan-form__title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 0;
+}
+
+.scan-back {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    width: fit-content;
+}
+.scan-back:hover { color: var(--text); }
+
+.scan-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.scan-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.scan-admin__header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.scan-btn-link {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+.scan-btn-link:hover { color: var(--text); }
+
+.scan-captures {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+}
+
+.scan-captures__title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 10px;
+}
+
+.scan-captures__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.scan-captures__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.scan-captures__promo {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.scan-btn-danger {
+    background: transparent;
+    border: 1px solid var(--red);
+    border-radius: 6px;
+    color: var(--red);
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background .15s;
+    flex-shrink: 0;
+}
+.scan-btn-danger:hover { background: var(--red); color: #fff; }
+
+.scan-success-inline {
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 600;
+    margin: 0;
+}
+
+.scan-field input,
+.scan-field select {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 15px;
+    padding: 10px 12px;
+    outline: none;
+    transition: border-color .2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.scan-field input:focus,
+.scan-field select:focus { border-color: var(--green); }
+
+.scan-field select option { background: var(--bg-card); }
+
+/* ─── Récap canard ───────────────────────────────────────── */
+
+.scan-canard-recap {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.scan-canard-recap__pts {
+    font-family: 'Nunito', sans-serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.scan-canard-recap__label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--green);
+}
+
+.scan-form__subtitle {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+.scan-form__grid {
+    display: grid;
+    grid-template-columns: 1fr 80px;
+    gap: 10px;
+}
+
+.scan-field--wide {
+    grid-column: 1 / -1;
+}
+
+.scan-admin__notice {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin: 6px 0 0;
+}
+
+.scan-admin__notice--warn {
+    color: #e09020;
+}
+
+.scan-field__opt {
+    font-weight: 400;
+    color: var(--text-dim);
+    font-size: 10px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+/* ─── Boutons ────────────────────────────────────────────── */
+
+.scan-btn {
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    padding: 13px 20px;
+    transition: opacity .15s, transform .1s;
+    width: 100%;
+}
+
+.scan-btn:active { transform: scale(0.98); }
+.scan-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.scan-btn--primary { background: var(--green); color: #fff; }
+.scan-btn--primary:hover:not(:disabled) { opacity: 0.85; }
+
+.scan-btn--ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+}
+.scan-btn--ghost:hover { color: var(--text); border-color: var(--text-dim); }
+
+/* ─── Succès ─────────────────────────────────────────────── */
+
+.scan-success {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 32px 0;
+}
+
+.scan-success__icon { font-size: 48px; }
+
+.scan-success__msg {
+    font-size: 16px;
+    color: var(--text);
+    margin: 0;
+}
+
+.scan-success__pts {
+    font-family: 'Nunito', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 4px 0 16px;
+}
+
+/* ─── Erreur ─────────────────────────────────────────────── */
+
+.scan-error {
+    background: rgba(192, 80, 80, 0.1);
+    border: 1px solid var(--red);
+    border-radius: 6px;
+    color: var(--red);
+    font-size: 13px;
+    padding: 10px 14px;
+    margin: 0;
+}
+
+/* ─── Animations ─────────────────────────────────────────── */
+
+@keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+}

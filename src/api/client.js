@@ -15,13 +15,13 @@ export async function apiFetch(path, options = {}, credentials = null) {
         headers,
     });
 
+    if (res.status === 204) return [];  // ← No Content → tableau vide
+
     if (!res.ok) {
-        // 401 → on laisse remonter pour que le composant gère la déconnexion
         const err = await res.json().catch(() => ({ message: res.statusText }));
         throw { status: res.status, ...err };
     }
 
-    // Certains endpoints retournent du texte (isApiAlive), d'autres du JSON
     const contentType = res.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
         return res.json();
