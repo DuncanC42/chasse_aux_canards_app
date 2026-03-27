@@ -1,23 +1,30 @@
-import {useState} from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ScanAdminPoser from "./ScanAdminPoser.jsx";
 import ScanAdminAttribuer from "./ScanAdminAttribuer.jsx";
 import "../scan/scan.css";
-import {useNavigate} from "react-router-dom";
-import "@babylonjs/viewer";
-
 
 export default function ScanAdmin({ cle, tag, canard, tagInconnu, onRefresh }) {
     const [mode, setMode] = useState(null);
     const navigate = useNavigate();
 
-    // Si tag inconnu, seul "poser" est disponible (créera le tag + canard)
     const peutAttribuer = !tagInconnu && !!tag?.canardId;
 
     return (
         <div className="scan-admin">
             <header className="scan-admin__header">
+                <div className="scan-admin__header-top">
+                    <span className="scan-admin__badge">🔑 Admin</span>
+                    <button
+                        className="scan-btn-link"
+                        onClick={() => navigate("/admin/dashboard")}
+                    >
+                        Dashboard →
+                    </button>
+                </div>
+
                 <code className="scan-admin__cle">{cle}</code>
-                <babylon-viewer source="/Duck.glb"></babylon-viewer>
+
                 {tagInconnu && (
                     <p className="scan-admin__notice scan-admin__notice--warn">
                         ⚠️ Tag non enregistré dans le système
@@ -29,15 +36,6 @@ export default function ScanAdmin({ cle, tag, canard, tagInconnu, onRefresh }) {
                         Tag connu mais pas encore assigné à un canard
                     </p>
                 )}
-                <div className="scan-admin__header-top">
-                    <span className="scan-admin__badge">🔑 Admin</span>
-                    <button
-                        className="scan-btn-link"
-                        onClick={() => navigate("/admin/dashboard")}
-                    >
-                        Gérer les promos →
-                    </button>
-                </div>
 
                 {canard && (
                     <p className="scan-admin__info">

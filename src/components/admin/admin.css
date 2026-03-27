@@ -16,6 +16,45 @@
 }
 
 /* ─── Login ──────────────────────────────────────────────── */
+/* ─── Tri ────────────────────────────────────────────────── */
+
+.admin-tri {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.admin-tri__label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-tri__btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-dim);
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+}
+
+.admin-tri__btn:hover { color: var(--text); border-color: var(--text-dim); }
+
+.admin-tri__btn--active {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.admin-tri__arrow { font-size: 11px; }
 
 .admin-login {
     background: var(--bg);

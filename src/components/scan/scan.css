@@ -16,6 +16,12 @@
 
 /* ─── États de chargement ────────────────────────────────── */
 
+.model-viewer-container{
+    display: flex;
+    justify-content: center;
+    border: red;
+}
+
 .scan-state {
     background: var(--bg);
     min-height: 100dvh;

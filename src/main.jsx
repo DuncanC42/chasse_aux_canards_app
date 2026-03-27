@@ -7,6 +7,7 @@ import AdminLogin from "./components/admin/AdminLogin.jsx";
 import RequireAuth from "./components/admin/RequireAuth.jsx";
 import AdminDashboard from "./components/admin/AdminDashboard.jsx";
 import ScanPage from "./components/scan/ScanPage.jsx";
+import "@google/model-viewer";
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
