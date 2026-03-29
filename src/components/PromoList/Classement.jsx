@@ -12,25 +12,13 @@ export default function Classement() {
     useEffect(() => {
         const fetchAll = async () => {
             try {
-                const [promos, points, max] = await Promise.all([
-                    apiFetch('/promos'),
+                const [classement, max] = await Promise.all([
                     apiFetch('/promos/points'),
                     apiFetch('/canards/points/total'),
                 ]);
-
-                const pointsMap = new Map(
-                    (Array.isArray(points) ? points : [])
-                        .map(p => [p.promoId, p.points])
-                );
-
-                const merged = (Array.isArray(promos) ? promos : [])
-                    .map(p => ({
-                        ...p,
-                        points: pointsMap.get(p.promoId) ?? 0,
-                    }))
+                const sorted = [...(Array.isArray(classement) ? classement : [])]
                     .sort((a, b) => b.points - a.points);
-
-                setPromos(merged);
+                setPromos(sorted);
                 setTotalMax(max ?? 0);
             } catch (err) {
                 setError(err.message ?? "Erreur de chargement");
