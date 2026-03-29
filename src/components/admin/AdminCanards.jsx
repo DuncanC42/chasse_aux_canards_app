@@ -3,19 +3,15 @@ import { useAuth } from "./AuthContext.jsx";
 import { apiFetch } from "../../api/client.js";
 import "./admin.css";
 
-const TRIS = [
-    { key: "batiment", label: "Bâtiment" },
-    { key: "piece",    label: "Pièce" },
-    { key: "nbPoint",  label: "Points" },
-];
-
 export default function AdminCanards() {
     const { credentials } = useAuth();
     const [canards, setCanards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [tri, setTri] = useState("batiment");
-    const [ordre, setOrdre] = useState("asc");
+
+    // Filtres — valeur "" = "tous"
+    const [filtreBatiment, setFiltreBatiment] = useState("");
+    const [filtreStatut, setFiltreStatut] = useState(""); // "" | "trouve" | "non_trouve"
 
     const load = async () => {
         try {
@@ -40,31 +36,27 @@ export default function AdminCanards() {
         }
     };
 
-    const toggleOrdre = (key) => {
-        if (tri === key) {
-            setOrdre(o => o === "asc" ? "desc" : "asc");
-        } else {
-            setTri(key);
-            setOrdre("asc");
-        }
+    // Liste des bâtiments uniques pour le filtre
+    const batiments = [...new Set(
+        canards
+            .map(c => c.localisation?.batiment)
+            .filter(Boolean)
+    )].sort();
+
+    // Application des filtres
+    const canardsAffiches = canards.filter(c => {
+        if (filtreBatiment && (c.localisation?.batiment ?? "") !== filtreBatiment) return false;
+        if (filtreStatut === "trouve"     && !c.trouve)  return false;
+        if (filtreStatut === "non_trouve" &&  c.trouve)  return false;
+        return true;
+    });
+
+    const resetFiltres = () => {
+        setFiltreBatiment("");
+        setFiltreStatut("");
     };
 
-    const canardsTries = [...canards].sort((a, b) => {
-        let va, vb;
-        if (tri === "batiment") {
-            va = a.localisation?.batiment ?? "";
-            vb = b.localisation?.batiment ?? "";
-        } else if (tri === "piece") {
-            va = a.localisation?.piece ?? "";
-            vb = b.localisation?.piece ?? "";
-        } else {
-            va = a.nbPoint ?? 0;
-            vb = b.nbPoint ?? 0;
-        }
-        if (va < vb) return ordre === "asc" ? -1 : 1;
-        if (va > vb) return ordre === "asc" ? 1 : -1;
-        return 0;
-    });
+    const filtresActifs = filtreBatiment !== "" || filtreStatut !== "";
 
     if (loading) return <p className="admin-state">Chargement…</p>;
 
@@ -74,38 +66,65 @@ export default function AdminCanards() {
 
             {error && <p className="admin-error">{error}</p>}
 
-            {/* Tri */}
-            <div className="admin-tri">
-                <span className="admin-tri__label">Trier par</span>
-                {TRIS.map(t => (
-                    <button
-                        key={t.key}
-                        className={`admin-tri__btn ${tri === t.key ? "admin-tri__btn--active" : ""}`}
-                        onClick={() => toggleOrdre(t.key)}
-                    >
-                        {t.label}
-                        {tri === t.key && (
-                            <span className="admin-tri__arrow">
-                                {ordre === "asc" ? " ↑" : " ↓"}
-                            </span>
-                        )}
-                    </button>
-                ))}
+            {/* ── Filtres ── */}
+            <div className="admin-filtres">
+                <div className="admin-filtres__row">
+                    <div className="admin-field admin-filtres__field">
+                        <label>Bâtiment</label>
+                        <select
+                            value={filtreBatiment}
+                            onChange={e => setFiltreBatiment(e.target.value)}
+                        >
+                            <option value="">Tous</option>
+                            {batiments.map(b => (
+                                <option key={b} value={b}>{b}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="admin-field admin-filtres__field">
+                        <label>Statut</label>
+                        <select
+                            value={filtreStatut}
+                            onChange={e => setFiltreStatut(e.target.value)}
+                        >
+                            <option value="">Tous</option>
+                            <option value="trouve">Trouvé</option>
+                            <option value="non_trouve">Pas encore trouvé</option>
+                        </select>
+                    </div>
+
+                    {filtresActifs && (
+                        <button
+                            className="admin-btn admin-btn--ghost admin-filtres__reset"
+                            onClick={resetFiltres}
+                        >
+                            Réinitialiser
+                        </button>
+                    )}
+                </div>
+
+                <p className="admin-filtres__count">
+                    {canardsAffiches.length} canard{canardsAffiches.length !== 1 ? "s" : ""}
+                    {filtresActifs ? " filtrés" : " au total"}
+                </p>
             </div>
 
-            {canardsTries.length === 0 ? (
+            {canardsAffiches.length === 0 ? (
                 <p className="admin-state">
-                    Aucun canard posé pour l'instant.<br />
-                    Scannez un tag NFC pour en poser un.
+                    {filtresActifs
+                        ? "Aucun canard ne correspond à ces filtres."
+                        : <>Aucun canard posé pour l'instant.<br />Scannez un tag NFC pour en poser un.</>
+                    }
                 </p>
             ) : (
                 <ul className="admin-list">
-                    {canardsTries.map(c => (
+                    {canardsAffiches.map(c => (
                         <li key={c.canardId ?? c.id} className="admin-list__item">
                             <div className="admin-list__info">
                                 <span className="admin-list__label">
                                     {c.localisation
-                                        ? `${c.localisation.batiment} — ${c.localisation.piece}`
+                                        ? [c.localisation.batiment, c.localisation.piece].filter(Boolean).join(" — ") || "Localisation partielle"
                                         : "Sans localisation"}
                                 </span>
                                 <span className="admin-list__meta">
@@ -116,6 +135,11 @@ export default function AdminCanards() {
                                     {c.localisation?.description
                                         ? ` · ${c.localisation.description}`
                                         : ""}
+                                    {" · "}
+                                    {c.trouve
+                                        ? <span className="admin-list__badge admin-list__badge--found">Trouvé ✓</span>
+                                        : <span className="admin-list__badge admin-list__badge--pending">En attente</span>
+                                    }
                                 </span>
                             </div>
                             <div className="admin-list__actions">

@@ -4,10 +4,12 @@ import { useAuth } from "./AuthContext.jsx";
 import AdminPromos from "./AdminPromos.jsx";
 import AdminCanards from "./AdminCanards.jsx";
 import "./admin.css";
+import Classement from "../PromoList/Classement.jsx";
 
 const TABS = [
-    { key: "promos",  label: "🎓 Promos" },
-    { key: "canards", label: "🦆 Canards" },
+    { key: "promos",      label: "🎓 Promos" },
+    { key: "canards",     label: "🦆 Canards" },
+    { key: "classement",  label: "🏆 Classement" },
 ];
 
 export default function AdminDashboard() {
@@ -48,8 +50,9 @@ export default function AdminDashboard() {
             </nav>
 
             <main className="admin-dash__content">
-                {tab === "promos"  && <AdminPromos />}
-                {tab === "canards" && <AdminCanards />}
+                {tab === "promos"     && <AdminPromos />}
+                {tab === "canards"    && <AdminCanards />}
+                {tab === "classement" && <Classement />}
             </main>
         </div>
     );
