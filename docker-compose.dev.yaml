@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development   # ← dev uniquement, prod géré par le compose racine
+      target: development
     ports:
       - "5173:5173"
     networks:

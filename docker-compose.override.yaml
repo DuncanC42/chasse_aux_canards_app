@@ -1,5 +1,5 @@
 services:
-  api:
+  front-office:
     networks:
       - chasse-canards-net
 
