@@ -129,7 +129,7 @@ export default function ScanAdminPoser({ cle, tag, canard, onBack, onDone }) {
                     <label>Points</label>
                     <input
                         type="number"
-                        min="1"
+                        min="0"
                         value={form.nbPoint}
                         onChange={set("nbPoint")}
                         required
